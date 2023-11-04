@@ -2,7 +2,16 @@ import { useEffect, useState } from "react";
 import Background from "./Background";
 import Container from "./Container";
 import Footer from "./Footer";
-import Header from "./Header";
+import Header, { HeaderTop } from "./Header";
+import Logo from "./Logo";
+import BookmarksButton from "./BookmarksButton";
+import SearchForm from "./SearchForm";
+import Sidebar, { SidebarTop } from "./Sidebar";
+import JobItemContent from "./JobItemContent";
+import ResultsCount from "./ResultsCount";
+import SortingControls from "./SortingControls";
+import Pagination from "./PaginationControls";
+import JobList from "./JobList";
 
 function App() {
   const [jobItems, setJobItems] = useState([]);
@@ -22,11 +31,30 @@ function App() {
 
     fetchData();
   }, [searchText]);
+
+  // Structure looks to complex
+  // TODO: consider Redux or Context at least
   return (
     <>
       <Background />
-      <Header searchText={searchText} setSearchText={setSearchText} />
-      <Container jobItems={jobItems} />
+      <Header>
+        <HeaderTop>
+          <Logo />
+          <BookmarksButton />
+        </HeaderTop>
+        <SearchForm searchText={searchText} setSearchText={setSearchText} />
+      </Header>
+      <Container>
+        <Sidebar>
+          <SidebarTop>
+            <ResultsCount />
+            <SortingControls />
+          </SidebarTop>
+          <JobList jobItems={jobItems} />
+          <Pagination />
+        </Sidebar>
+        <JobItemContent />
+      </Container>
       <Footer />
     </>
   );
