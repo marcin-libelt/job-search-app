@@ -16,7 +16,7 @@ import { useJobItems } from "../lib/hooks";
 
 function App() {
   const [searchText, setSearchText] = useState("react");
-  const { jobItems, isLoading } = useJobItems(searchText);
+  const [jobItems, isLoading] = useJobItems(searchText);
 
   // Structure looks to complex
   // TODO: consider Redux or Context at least
