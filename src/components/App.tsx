@@ -12,27 +12,15 @@ import ResultsCount from "./ResultsCount";
 import SortingControls from "./SortingControls";
 import Pagination from "./PaginationControls";
 import JobList from "./JobList";
-import { useJobItems } from "../lib/hooks";
+import { useActiveId, useJobItems } from "../lib/hooks";
 
 function App() {
   const [searchText, setSearchText] = useState("");
   const [jobItems, isLoading] = useJobItems(searchText);
-  const [activeId, setActiveId] = useState<number | null>(null);
+  const activeId = useActiveId();
 
   // Structure looks to complex
   // TODO: consider Redux or Context at least
-
-  useEffect(() => {
-    const handleHashchange = () => {
-      const id = +window.location.hash.slice(1);
-      setActiveId(id);
-    };
-    window.addEventListener("hashchange", handleHashchange);
-
-    return () => {
-      window.removeEventListener("hashchange", handleHashchange);
-    };
-  }, []);
 
   return (
     <>
