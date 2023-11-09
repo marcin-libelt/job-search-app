@@ -29,7 +29,7 @@ export function useJobItem(id: number | null) {
     const fetchData = async () => {
       const response = await fetch(`${BASE_API_URL}/${id}`);
       const data = await response.json();
-      setJobItem(data);
+      setJobItem(data.jobItem);
     };
     fetchData();
   }, [id]);
