@@ -19,8 +19,3 @@ export type JobItemExpanded = JobItem & {
   reviews: string[];
   salary: string;
 };
-
-export type JobListProps = {
-  jobItems: JobItem[];
-  isLoading: boolean;
-};
