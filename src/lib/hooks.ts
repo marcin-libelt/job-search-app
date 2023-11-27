@@ -25,6 +25,9 @@ export function useActiveId() {
 
 const fetchJobItem = async (id: number): Promise<JobItemApiResponse> => {
   const response = await fetch(`${BASE_API_URL}/${id}`);
+  if (!response.ok) {
+    throw new Error("404!!!");
+  }
   const data = await response.json();
   return data;
 };
@@ -38,7 +41,9 @@ export function useJobItem(id: number | null) {
       refetchOnWindowFocus: false,
       retry: false,
       enabled: Boolean(id),
-      onError: () => {},
+      onError: (err) => {
+        console.log(err);
+      },
     }
   );
 
