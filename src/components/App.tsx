@@ -13,14 +13,15 @@ import SortingControls from "./SortingControls";
 import Pagination from "./PaginationControls";
 import JobList from "./JobList";
 import { useDebounce, useJobItems } from "../lib/hooks";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [searchText, setSearchText] = useState("");
   const debounceSearchText = useDebounce<string>(searchText);
   const { jobItems, isLoading } = useJobItems(debounceSearchText);
 
-  const jobItemsSliced = jobItems.slice(0, 7);
-  const totalNumberOfResults = jobItems.length;
+  const jobItemsSliced = jobItems?.slice(0, 7) || [];
+  const totalNumberOfResults = jobItems?.length || 0;
 
   // Structure looks to complex
   // TODO: consider Redux or Context at least
@@ -47,6 +48,7 @@ function App() {
         <JobItemContent />
       </Container>
       <Footer />
+      <Toaster position="top-right" />
     </>
   );
 }
