@@ -55,9 +55,6 @@ export function useJobItems(searchText: string) {
   const [jobItems, setJobItems] = useState<JobItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const jobItemsSliced = jobItems.slice(0, 7);
-  const totalNumberOfResults = jobItems.length;
-
   useEffect(() => {
     if (!searchText) return;
 
@@ -73,7 +70,7 @@ export function useJobItems(searchText: string) {
     fetchData();
   }, [searchText]);
 
-  return { jobItemsSliced, isLoading, totalNumberOfResults } as const;
+  return { jobItems, isLoading } as const;
 }
 
 export function useDebounce<T>(value: T, delay = 500): T {
