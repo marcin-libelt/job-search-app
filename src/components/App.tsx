@@ -14,6 +14,7 @@ import Pagination from "./PaginationControls";
 import JobList from "./JobList";
 import { useDebounce, useJobItems } from "../lib/hooks";
 import { Toaster } from "react-hot-toast";
+import { PAGINATION_PAGE_COUNT } from "../lib/constants";
 
 function App() {
   const [searchText, setSearchText] = useState("");
@@ -23,9 +24,15 @@ function App() {
   const { jobItems, isLoading } = useJobItems(debounceSearchText);
 
   const totalNumberOfResults = jobItems?.length || 0;
-  const totalNumberOfPages = Math.ceil(totalNumberOfResults / 7);
+  const totalNumberOfPages = Math.ceil(
+    totalNumberOfResults / PAGINATION_PAGE_COUNT
+  );
+
   const jobItemsSliced =
-    jobItems?.slice(currentPage * 7 - 7, currentPage * 7) || [];
+    jobItems?.slice(
+      currentPage * PAGINATION_PAGE_COUNT - PAGINATION_PAGE_COUNT,
+      currentPage * PAGINATION_PAGE_COUNT
+    ) || [];
 
   // Structure looks to complex
   // TODO: consider Redux or Context at least
