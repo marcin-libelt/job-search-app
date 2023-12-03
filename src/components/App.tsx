@@ -15,7 +15,7 @@ import JobList from "./JobList";
 import { useDebounce, useJobItems } from "../lib/hooks";
 import { Toaster } from "react-hot-toast";
 import { PAGINATION_PAGE_COUNT } from "../lib/constants";
-import { SortBy } from "../lib/types";
+import { PaginationDirection, SortBy } from "../lib/types";
 
 function App() {
   // state
@@ -44,7 +44,7 @@ function App() {
     ) || [];
 
   // event handlers
-  const handleChangePage = (direction: "next" | "previous") => {
+  const handleChangePage = (direction: PaginationDirection) => {
     if (direction === "previous") {
       setCurrentPage((page) => page - 1);
     } else if (direction === "next") {

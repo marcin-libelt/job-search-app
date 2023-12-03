@@ -21,3 +21,5 @@ export type JobItemExpanded = JobItem & {
 };
 
 export type SortBy = "relevance" | "age";
+
+export type PaginationDirection = "next" | "previous";
