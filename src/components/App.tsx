@@ -44,6 +44,7 @@ function App() {
     ) || [];
 
   // event handlers
+
   const handleChangePage = (direction: PaginationDirection) => {
     if (direction === "previous") {
       setCurrentPage((page) => page - 1);
