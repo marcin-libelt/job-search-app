@@ -1,27 +1,29 @@
 import { createContext } from "react";
-
 import { useLocalStorage } from "../lib/hooks";
 
 type BookmarksContextProviderProps = {
   children: React.ReactNode;
 };
-export const BookmarksContext = createContext<{
-  bookmarkIds: number[];
+
+export type BookmarksContext = {
+  bookmarkedIds: number[];
   handleToggleBookmark: (id: number) => void;
-} | null>(null);
+};
+
+export const BookmarksContext = createContext<BookmarksContext | null>(null);
 
 export default function BookmarksContextProvider({
   children,
 }: BookmarksContextProviderProps) {
   // state
-  const [bookmarkIds, setBookmarksIds] = useLocalStorage<number[]>(
+  const [bookmarkedIds, setBookmarksIds] = useLocalStorage<number[]>(
     "bookmarsksIds",
     []
   );
 
   // event handlers
   const handleToggleBookmark = (id: number) => {
-    if (bookmarkIds.includes(id)) {
+    if (bookmarkedIds.includes(id)) {
       setBookmarksIds((prev) => prev.filter((item) => item !== id));
     } else {
       setBookmarksIds((prev) => [...prev, id]);
@@ -31,7 +33,7 @@ export default function BookmarksContextProvider({
   return (
     <BookmarksContext.Provider
       value={{
-        bookmarkIds,
+        bookmarkedIds,
         handleToggleBookmark,
       }}
     >
