@@ -14,7 +14,7 @@ export default function BookmarksContextProvider({
   children,
 }: BookmarksContextProviderProps) {
   // state
-  const [bookmarkIds, setBookmarksIds] = useLocalStorage<[]>(
+  const [bookmarkIds, setBookmarksIds] = useLocalStorage<number[]>(
     "bookmarsksIds",
     []
   );
