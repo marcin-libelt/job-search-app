@@ -6,7 +6,6 @@ import {
 } from "../contexts/BookmarksContextProvider";
 
 export default function BookmarksPopover() {
-  //const { bookmarkedIds } = useBookmarksContext();
   const { bookmarkedJobItems, isLoading } = useContext(
     BookmarksContext
   ) as BookmarksContextType;
