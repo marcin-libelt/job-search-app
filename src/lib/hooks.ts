@@ -1,34 +1,36 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { JobItem, JobItemExpanded } from "./types";
 import { BASE_API_URL } from "./constants";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { errorHandler } from "./utils";
+import { BookmarksContext } from "../contexts/BookmarksContextProvider";
 
-type JobItemApiResponse = { public: boolean; jobItem: JobItemExpanded };
-type JobItemsApiResponse = {
-  public: boolean;
-  sorted: boolean;
-  jobItems: JobItem[];
-};
+export function useJobItems(ids: number[]) {
+  const results = useQueries({
+    queries: ids.map((id) => ({
+      queryKey: ["job-item", id],
+      queryFn: () => fetchJobItem(id),
+      staleTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
+      retry: false,
+      enabled: Boolean(id),
+      onError: (error: unknown) => errorHandler(error, toast.error),
+    })),
+  });
 
-export function useActiveId() {
-  const [activeId, setActiveId] = useState<number | null>(null);
+  const jobItems = results
+    .map((result) => result.data?.jobItem)
+    .filter((result) => result !== undefined) as JobItemExpanded[];
 
-  useEffect(() => {
-    const handleHashchange = () => {
-      const id = +window.location.hash.slice(1);
-      setActiveId(id);
-    };
-    window.addEventListener("hashchange", handleHashchange);
-
-    return () => {
-      window.removeEventListener("hashchange", handleHashchange);
-    };
-  }, []);
-
-  return activeId;
+  return {
+    jobItems,
+    isLoading: results.some((result) => result.isLoading),
+  };
 }
+
+// --------------------------------------------------------------------------------
+type JobItemApiResponse = { public: boolean; jobItem: JobItemExpanded };
 
 const fetchJobItem = async (id: number): Promise<JobItemApiResponse> => {
   const response = await fetch(`${BASE_API_URL}/${id}`);
@@ -56,7 +58,15 @@ export function useJobItem(id: number | null) {
   return { jobItem: data?.jobItem, isLoading: isInitialLoading } as const;
 }
 
-const fetchJobItems = async (
+// --------------------------------------------------------------------------------
+
+type JobItemsApiResponse = {
+  public: boolean;
+  sorted: boolean;
+  jobItems: JobItem[];
+};
+
+const fetchSearchQuery = async (
   searchText: string
 ): Promise<JobItemsApiResponse> => {
   const response = await fetch(`${BASE_API_URL}?search=${searchText}`);
@@ -69,10 +79,10 @@ const fetchJobItems = async (
   return data;
 };
 
-export function useJobItems(searchText: string) {
+export function useSearchQuery(searchText: string) {
   const { data, isInitialLoading } = useQuery(
     ["job-items", searchText],
-    () => fetchJobItems(searchText),
+    () => fetchSearchQuery(searchText),
     {
       staleTime: 1000 * 60 * 60,
       refetchOnWindowFocus: false,
@@ -84,6 +94,15 @@ export function useJobItems(searchText: string) {
 
   return { jobItems: data?.jobItems, isLoading: isInitialLoading } as const;
 }
+
+export function useBookmarkedJobItems<T>(items: T[]) {
+  return {
+    isLoading: false,
+    bookmarkedJobItems: items,
+  };
+}
+
+// --------------------------------------------------------------------------------
 
 export function useDebounce<T>(value: T, delay = 500): T {
   const [debounceText, setDebounceText] = useState(value);
@@ -115,4 +134,34 @@ export function useLocalStorage<T>(
   }, [value, key]);
 
   return [value, setValue] as const;
+}
+
+// --------------------------------------------------------------------------------
+
+export function useActiveId() {
+  const [activeId, setActiveId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleHashchange = () => {
+      const id = +window.location.hash.slice(1);
+      setActiveId(id);
+    };
+    window.addEventListener("hashchange", handleHashchange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashchange);
+    };
+  }, []);
+
+  return activeId;
+}
+
+export function useBookmarksContext() {
+  const context = useContext(BookmarksContext);
+  if (!context) {
+    throw new Error(
+      "useBookmarksContext must be used within a BookmarksContextProvider"
+    );
+  }
+  return context;
 }
