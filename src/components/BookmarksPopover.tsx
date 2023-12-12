@@ -1,16 +1,11 @@
 import JobList from "./JobList";
-import { forwardRef, useContext } from "react";
-import {
-  BookmarksContext,
-  BookmarksContextType,
-} from "../contexts/BookmarksContextProvider";
+import { forwardRef } from "react";
 import { createPortal } from "react-dom";
 import BookmarksEmptyMessage from "./BookmarksEmptyMessage";
+import { useBookmarksContext } from "../lib/hooks";
 
 const BookmarksPopover = forwardRef<HTMLDivElement>(function (_, ref) {
-  const { bookmarkedJobItems, isLoading } = useContext(
-    BookmarksContext
-  ) as BookmarksContextType;
+  const { bookmarkedJobItems, isLoading } = useBookmarksContext();
 
   const hasJobItems = bookmarkedJobItems.length > 0;
 

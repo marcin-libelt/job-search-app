@@ -1,17 +1,21 @@
 import { createContext } from "react";
 import { useActiveId } from "../lib/hooks";
 
-export const ActiveIdContext = createContext<number | null>(null);
+type ActiveIdContextProviderProps = {
+  children: React.ReactNode;
+};
+
+export const ActiveIdContext = createContext<{
+  activeId: number | null;
+} | null>(null);
 
 export default function ActiveIdContextProvider({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: ActiveIdContextProviderProps) {
   const activeId = useActiveId();
 
   return (
-    <ActiveIdContext.Provider value={activeId}>
+    <ActiveIdContext.Provider value={{ activeId }}>
       {children}
     </ActiveIdContext.Provider>
   );

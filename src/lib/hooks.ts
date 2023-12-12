@@ -5,6 +5,7 @@ import { useQueries, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { errorHandler } from "./utils";
 import { BookmarksContext } from "../contexts/BookmarksContextProvider";
+import { ActiveIdContext } from "../contexts/ActiveIdContextProvider";
 
 export function useJobItems(ids: number[]) {
   const results = useQueries({
@@ -158,6 +159,16 @@ export function useActiveId() {
 }
 
 // --------------------------------------------------------------------------------
+
+export function useActiveIdContext() {
+  const context = useContext(ActiveIdContext);
+  if (!context) {
+    throw new Error(
+      "useActiveIdContext must be used within a ActiveIdContextProvider"
+    );
+  }
+  return context;
+}
 
 export function useBookmarksContext() {
   const context = useContext(BookmarksContext);

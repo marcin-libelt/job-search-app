@@ -1,11 +1,9 @@
-import { useContext } from "react";
-import { useJobItem } from "../lib/hooks";
+import { useActiveIdContext, useJobItem } from "../lib/hooks";
 import BookmarkIcon from "./BookmarkIcon";
 import Spinner from "./Spinner";
-import { ActiveIdContext } from "../contexts/ActiveIdContextProvider";
 
 export default function JobItemContent() {
-  const activeId = useContext(ActiveIdContext);
+  const { activeId } = useActiveIdContext();
   const { jobItem, isLoading } = useJobItem(activeId);
 
   if (isLoading) {
