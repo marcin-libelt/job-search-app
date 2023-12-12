@@ -1,7 +1,8 @@
-import { useActiveId } from "../lib/hooks";
+import { useContext } from "react";
 import { JobItem } from "../lib/types";
 import JobListItem from "./JobListItem";
 import Spinner from "./Spinner";
+import { ActiveIdContext } from "../contexts/ActiveIdContextProvider";
 
 type JobListProps = {
   jobItems: JobItem[];
@@ -9,7 +10,7 @@ type JobListProps = {
 };
 
 export function JobList({ jobItems, isLoading }: JobListProps) {
-  const activeId = useActiveId();
+  const activeId = useContext(ActiveIdContext);
 
   return (
     <ul className="job-list">
