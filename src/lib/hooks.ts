@@ -146,6 +146,7 @@ export function useActiveId() {
       const id = +window.location.hash.slice(1);
       setActiveId(id);
     };
+    handleHashchange();
     window.addEventListener("hashchange", handleHashchange);
 
     return () => {
@@ -155,6 +156,8 @@ export function useActiveId() {
 
   return activeId;
 }
+
+// --------------------------------------------------------------------------------
 
 export function useBookmarksContext() {
   const context = useContext(BookmarksContext);
