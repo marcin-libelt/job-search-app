@@ -242,6 +242,16 @@ body::-webkit-scrollbar {
   transition: all 0.2s;
 }
 
+.bookmarks--empty {
+  opacity: 0.55;
+  color: #0d1114;
+  font-size: 16px;
+  margin-top: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* JOB LIST */
 .job-list {
   background-color: #fff;
@@ -980,7 +990,6 @@ body::-webkit-scrollbar {
 /* COPYRIGHT */
 .footer > small {
   font-size: 11px;
-  max-width: 200px;
 }
 
 .footer > small *::selection {

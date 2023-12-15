@@ -4,10 +4,9 @@ export default function Footer() {
       <small>
         <p>
           © Copyright by{" "}
-          <a href="https://bytegrad.com" target="_blank">
-            ByteGrad.com
+          <a href="https://marcin-libelt.github.io/" target="_blank">
+            Lumos IT - Marcin Libelt
           </a>
-          . Intended for learning or your portfolio.
         </p>
       </small>
 
