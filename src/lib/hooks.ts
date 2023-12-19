@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { errorHandler } from "./utils";
 import { BookmarksContext } from "../contexts/BookmarksContextProvider";
 import { ActiveIdContext } from "../contexts/ActiveIdContextProvider";
-import { JobItemsContext } from "../contexts/JobItemsContextProvider";
+import { SearchTextContext } from "../contexts/SearchTextContextProvider";
 
 export function useJobItems(ids: number[]) {
   const results = useQueries({
@@ -69,9 +69,9 @@ type JobItemsApiResponse = {
 };
 
 const fetchSearchQuery = async (
-  searchText: string
+  SearchTextContext: string
 ): Promise<JobItemsApiResponse> => {
-  const response = await fetch(`${BASE_API_URL}?search=${searchText}`);
+  const response = await fetch(`${BASE_API_URL}?search=${SearchTextContext}`);
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(errorData.description);
@@ -81,15 +81,15 @@ const fetchSearchQuery = async (
   return data;
 };
 
-export function useSearchQuery(searchText: string) {
+export function useSearchQuery(SearchTextContext: string) {
   const { data, isInitialLoading } = useQuery(
-    ["job-items", searchText],
-    () => fetchSearchQuery(searchText),
+    ["job-items", SearchTextContext],
+    () => fetchSearchQuery(SearchTextContext),
     {
       staleTime: 1000 * 60 * 60,
       refetchOnWindowFocus: false,
       retry: false,
-      enabled: Boolean(searchText),
+      enabled: Boolean(SearchTextContext),
       onError: (error) => errorHandler(error, toast.error),
     }
   );
@@ -181,11 +181,11 @@ export function useBookmarksContext() {
   return context;
 }
 
-export function useJobItemsContext() {
-  const context = useContext(JobItemsContext);
+export function useSearchTextContext() {
+  const context = useContext(SearchTextContext);
   if (!context) {
     throw new Error(
-      "useJobItemsContext must be used within a JobItemsContextProvider"
+      "useSearchTextContext must be used within a SearchTextContextProvider"
     );
   }
   return context;

@@ -1,7 +1,7 @@
-import { useJobItemsContext } from "../lib/hooks";
+import { useSearchTextContext } from "../lib/hooks";
 
 export default function SearchForm() {
-  const { searchText, setSearchText } = useJobItemsContext();
+  const { searchText, setSearchText } = useSearchTextContext();
 
   return (
     <form

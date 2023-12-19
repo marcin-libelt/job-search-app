@@ -1,15 +1,17 @@
 import React, { createContext, useState } from "react";
 import { useDebounce } from "../lib/hooks";
 
-type JobItemsContextType = {
+type SearchTextContextType = {
   searchText: string;
   setSearchText: (searchText: string) => void;
   debounceSearchText: string;
 };
 
-export const JobItemsContext = createContext<JobItemsContextType | null>(null);
+export const SearchTextContext = createContext<SearchTextContextType | null>(
+  null
+);
 
-export default function JobItemsContextProvider({
+export default function SearchTextContextProvider({
   children,
 }: {
   children: React.ReactNode;
@@ -18,7 +20,7 @@ export default function JobItemsContextProvider({
   const debounceSearchText = useDebounce<string>(searchText);
 
   return (
-    <JobItemsContext.Provider
+    <SearchTextContext.Provider
       value={{
         searchText,
         setSearchText,
@@ -26,6 +28,6 @@ export default function JobItemsContextProvider({
       }}
     >
       {children}
-    </JobItemsContext.Provider>
+    </SearchTextContext.Provider>
   );
 }
