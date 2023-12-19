@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { errorHandler } from "./utils";
 import { BookmarksContext } from "../contexts/BookmarksContextProvider";
 import { ActiveIdContext } from "../contexts/ActiveIdContextProvider";
+import { JobItemsContext } from "../contexts/JobItemsContextProvider";
 
 export function useJobItems(ids: number[]) {
   const results = useQueries({
@@ -175,6 +176,16 @@ export function useBookmarksContext() {
   if (!context) {
     throw new Error(
       "useBookmarksContext must be used within a BookmarksContextProvider"
+    );
+  }
+  return context;
+}
+
+export function useJobItemsContext() {
+  const context = useContext(JobItemsContext);
+  if (!context) {
+    throw new Error(
+      "useJobItemsContext must be used within a JobItemsContextProvider"
     );
   }
   return context;
