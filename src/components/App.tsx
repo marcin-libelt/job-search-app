@@ -10,14 +10,10 @@ import JobItemContent from "./JobItemContent";
 import ResultsCount from "./ResultsCount";
 import SortingControls from "./SortingControls";
 import Pagination from "./PaginationControls";
-import JobList from "./JobList";
 import { Toaster } from "react-hot-toast";
-import { useJobItemsContext } from "../lib/hooks";
+import JobListSearch from "./JobListSearch";
 
 function App() {
-  const { jobItemsSortedAndSliced, isLoading } = useJobItemsContext();
-  // Structure looks to complex
-  // TODO: consider Redux or Context at least
   return (
     <>
       <Background />
@@ -34,7 +30,7 @@ function App() {
             <ResultsCount />
             <SortingControls />
           </SidebarTop>
-          <JobList jobItems={jobItemsSortedAndSliced} isLoading={isLoading} />
+          <JobListSearch />
           <Pagination />
         </Sidebar>
         <JobItemContent />

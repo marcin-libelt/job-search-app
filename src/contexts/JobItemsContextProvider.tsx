@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useMemo, useState } from "react";
 import { JobItem, PaginationDirection, SortBy } from "../lib/types";
 import { PAGINATION_PAGE_COUNT } from "../lib/constants";
 import { useSearchQuery, useSearchTextContext } from "../lib/hooks";
@@ -34,18 +34,26 @@ export default function JobItemsContextProvider({
   const totalNumberOfPages = Math.ceil(
     totalNumberOfResults / PAGINATION_PAGE_COUNT
   );
-  const jobItemsSorted = jobItems?.sort((a, b) => {
-    if (sortBy === "relevance") {
-      return b.relevanceScore - a.relevanceScore;
-    } else {
-      return a.daysAgo - b.daysAgo;
-    }
-  });
-  const jobItemsSortedAndSliced =
-    jobItemsSorted?.slice(
-      currentPage * PAGINATION_PAGE_COUNT - PAGINATION_PAGE_COUNT,
-      currentPage * PAGINATION_PAGE_COUNT
-    ) || [];
+  const jobItemsSorted = useMemo(
+    () =>
+      [...(jobItems || [])].sort((a, b) => {
+        if (sortBy === "relevance") {
+          return b.relevanceScore - a.relevanceScore;
+        } else {
+          return a.daysAgo - b.daysAgo;
+        }
+      }),
+    [sortBy, jobItems]
+  );
+
+  const jobItemsSortedAndSliced = useMemo(
+    () =>
+      jobItemsSorted?.slice(
+        currentPage * PAGINATION_PAGE_COUNT - PAGINATION_PAGE_COUNT,
+        currentPage * PAGINATION_PAGE_COUNT
+      ),
+    [jobItemsSorted, currentPage]
+  );
 
   // event handlers
 
